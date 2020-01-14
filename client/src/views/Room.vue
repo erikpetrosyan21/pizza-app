@@ -8,7 +8,7 @@
               Your room id:
               <span class="roomID">{{id}}</span>
             </h1>
-            <el-button @click="startRoom" type="success" plain>GO!!</el-button>
+            <el-button v-if="buttonHide" @click="startRoom" type="success" plain>GO!!</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -27,18 +27,32 @@ import io from "socket.io-client";
 export default {
   data() {
     return {
-      socket: io("localhost:3000"),
-      id: `${this.$route.params.id}`
+      socket: io("http://10.33.40.71:3000"),
+      id: `${this.$route.params.id}`,
+      buttonHide: true
     };
   },
   methods: {
     startRoom() {
       this.socket.emit("joinRoom", this.id);
+      this.buttonHide = false;
+    },
+    notification() {
+      this.$notify({
+        title: "Success",
+        message: "User is connected to room!",
+        type: "success"
+      });
     }
   },
   mounted() {
     this.socket.on("sendEvent", data => {
       console.log(data);
+    });
+
+    this.socket.on("notifConnect", data => {
+      console.log(data);
+      this.notification();
     });
   }
 };

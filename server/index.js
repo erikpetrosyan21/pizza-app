@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io', {
-    pingInterval: 10000,
-    pingTimeout: 5000
-  })(http);
+    pingInterval: 60000,
+    pingTimeout: 60000
+})(http);
 
 app.use(express.static('public'));
 
@@ -16,11 +16,12 @@ io.on('connection', function (socket) {
     console.log('a user connected');
     socket.on('joinRoom', (data) => {
         socket.join(data, () => {
-            console.log('ok ' + data)
+            console.log('ok ' + data);
         });
         io.to(data).emit('sendEvent', data);
+        io.to(data).emit('notifConnect', true);
     });
-    socket.on('disconnect', () =>{ socket.disconnect(); });
+    socket.on('disconnect', () => { socket.disconnect(); });
 });
 
 http.listen(3000, function () {
