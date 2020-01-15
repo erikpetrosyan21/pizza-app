@@ -18,9 +18,16 @@ io.on('connection', function (socket) {
         socket.join(data, () => {
             console.log('ok ' + data);
         });
+
         io.to(data).emit('sendEvent', data);
         io.to(data).emit('notifConnect', true);
+
+        //NOT WORKING !!!!!!
+        // socket.on('transferValue',(da)=>{
+        //     console.log('ok')
+        // });
     });
+
     socket.on('disconnect', () => { socket.disconnect(); });
 });
 

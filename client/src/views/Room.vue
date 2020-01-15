@@ -12,19 +12,25 @@
           </el-col>
         </el-row>
       </el-header>
-      <el-main>
-        <el-row>
-          <el-col :span="24"></el-col>
-        </el-row>
-      </el-main>
+      <!-- <el-main> -->
+      <!-- <el-row> -->
+      <!-- <el-col :span="24"> -->
+      <Transfer></Transfer>
+      <!-- </el-col> -->
+      <!-- </el-row> -->
+      <!-- </el-main> -->
     </el-container>
   </div>
 </template>
 
 <script>
 import io from "socket.io-client";
+import Transfer from "../components/Transfer.vue";
 
 export default {
+  components: {
+    Transfer
+  },
   data() {
     return {
       socket: io("http://10.33.40.71:3000"),
